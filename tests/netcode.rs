@@ -4,12 +4,12 @@ use std::{
 };
 
 use bevy::prelude::*;
-use bevy_renet::renet::{
-    transport::{
+use bevy_renet::{
+    netcode::{
         ClientAuthentication, NetcodeClientTransport, NetcodeServerTransport, ServerAuthentication,
         ServerConfig,
     },
-    ConnectionConfig, RenetClient, RenetServer,
+    renet::{ConnectionConfig, RenetClient, RenetServer},
 };
 use bevy_replicon::prelude::*;
 use bevy_replicon_renet::{RenetChannelsExt, RepliconRenetPlugins};
@@ -32,24 +32,38 @@ fn connect_disconnect() {
 
     setup(&mut server_app, &mut client_app);
 
+    assert!(server_app.world().resource::<RepliconServer>().is_running());
+
+    let renet_server = server_app.world().resource::<RenetServer>();
+    assert_eq!(renet_server.connected_clients(), 1);
+
+    let connected_clients = server_app.world().resource::<ConnectedClients>();
+    assert_eq!(connected_clients.len(), 1);
+
+    let replicon_client = client_app.world().resource::<RepliconClient>();
+    assert!(replicon_client.is_connected());
+
     let mut renet_client = client_app.world_mut().resource_mut::<RenetClient>();
     assert!(renet_client.is_connected());
+
     renet_client.disconnect();
 
     client_app.update();
     server_app.update();
 
-    let renet_server = server_app.world().resource::<RenetServer>();
-    assert_eq!(renet_server.connected_clients(), 0);
-
     let connected_clients = server_app.world().resource::<ConnectedClients>();
     assert_eq!(connected_clients.len(), 0);
+
+    let renet_server = server_app.world().resource::<RenetServer>();
+    assert_eq!(renet_server.connected_clients(), 0);
 
     let replicon_client = client_app.world().resource::<RepliconClient>();
     assert!(replicon_client.is_disconnected());
 
     server_app.world_mut().remove_resource::<RenetServer>();
+
     server_app.update();
+
     assert!(!server_app.world().resource::<RepliconServer>().is_running());
 }
 
@@ -132,7 +146,7 @@ fn client_event() {
     server_app.update();
 
     let client_events = server_app
-        .world_mut()
+        .world()
         .resource::<Events<FromClient<DummyEvent>>>();
     assert_eq!(client_events.len(), 1);
 }

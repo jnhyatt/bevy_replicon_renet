@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `bevy_replicon_renet::client::RepliconRenetClientPlugin` now should be imported as `bevy_replicon_renet::RepliconRenetClientPlugin`.
+- `bevy_replicon_renet::server::RepliconRenetServerPlugin` now should be imported as `bevy_replicon_renet::RepliconRenetServerPlugin`.
+
+## [0.6.0] - 2024-12-25
+
+### Changed
+
+- Update to `bevy_replicon` 0.29 and `renet` 1.0.0.
+
 ## [0.5.1] - 2024-11-29
 
 ### Added
@@ -52,7 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First release after I/O abstraction.
 
-[unreleased]: https://github.com/projectharmonia/bevy_replicon_renet/compare/v0.5.1...HEAD
+[unreleased]: https://github.com/projectharmonia/bevy_replicon_renet/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/projectharmonia/bevy_replicon_renet/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/projectharmonia/bevy_replicon_renet/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/projectharmonia/bevy_replicon_renet/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/projectharmonia/bevy_replicon_renet/releases/tag/v0.4.0
